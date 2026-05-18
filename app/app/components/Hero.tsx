@@ -1,3 +1,15 @@
+"use client";
+
+import Image from "next/image";
+import { TypeAnimation } from "react-type-animation";
+import {
+  FaArrowRight,
+  FaDownload,
+  FaEnvelope,
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
+
 type HeroProps = {
   language: "es" | "en";
 };
@@ -5,57 +17,119 @@ type HeroProps = {
 export default function Hero({ language }: HeroProps) {
   const content = {
     es: {
-      tag: "Estudiante de Ingeniería de Software",
-      title: "Construyendo soluciones digitales modernas, funcionales y escalables.",
+      hello: "Hola, soy",
       description:
-        "Soy Eduardo Fabian Chacaliaza Minaya, estudiante de Ingeniería de Software en la UPC. Me enfoco en desarrollar proyectos con una base técnica sólida, cuidando la estructura, la experiencia de usuario y las buenas prácticas de desarrollo.",
-      primaryButton: "Ver proyectos",
-      secondaryButton: "Contactarme",
+        "Estudiante de Ingenieria de Software enfocado en crear interfaces claras, aplicaciones web funcionales y experiencias digitales cuidadas desde el codigo hasta el detalle visual.",
+      projects: "Ver proyectos",
+      contact: "Contactarme",
+      cv: "Descargar CV",
+      typingPrefix: "Desarrollando ",
+      typing: [
+        "interfaces modernas",
+        "aplicaciones web",
+        "experiencias digitales",
+        "software funcional",
+      ],
     },
     en: {
-      tag: "Software Engineering Student",
-      title: "Building modern, functional and scalable digital solutions.",
+      hello: "Hello, I'm",
       description:
-        "I am Eduardo Fabian Chacaliaza Minaya, a Software Engineering student at UPC. I focus on developing projects with a solid technical foundation, paying attention to structure, user experience and software development best practices.",
-      primaryButton: "View projects",
-      secondaryButton: "Contact me",
+        "Software Engineering student focused on building clear interfaces, functional web apps and polished digital experiences from code quality to visual detail.",
+      projects: "View projects",
+      contact: "Contact me",
+      cv: "Download CV",
+      typingPrefix: "Building ",
+      typing: [
+        "modern interfaces",
+        "web applications",
+        "digital experiences",
+        "functional software",
+      ],
     },
   };
 
   const text = content[language];
 
   return (
-    <section className="hero">
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="hero-background" aria-hidden="true" />
+
       <div className="hero-content">
-        <p className="hero-tag">{text.tag}</p>
-        <h1>{text.title}</h1>
-        <p className="hero-description">{text.description}</p>
+        <div className="hero-text">
+          <p className="hero-intro">{text.hello}</p>
 
-        <div className="hero-buttons">
-          <a href="#proyectos" className="btn btn-primary">
-            {text.primaryButton}
-          </a>
-          <a href="#contacto" className="btn btn-secondary">
-            {text.secondaryButton}
-          </a>
+          <h1 id="hero-title">
+            Eduardo <br />
+            Chacaliaza
+          </h1>
+
+          <div className="hero-typing" aria-label={text.typingPrefix.trim()}>
+            <span className="typing-prefix">{text.typingPrefix}</span>
+            <TypeAnimation
+              sequence={[
+                text.typing[0],
+                1800,
+                text.typing[1],
+                1800,
+                text.typing[2],
+                1800,
+                text.typing[3],
+                1800,
+              ]}
+              wrapper="span"
+              speed={42}
+              repeat={Infinity}
+              className="typing-highlight"
+            />
+          </div>
+
+          <p className="hero-description">{text.description}</p>
+
+          <div className="hero-buttons">
+            <a href="#proyectos" className="btn btn-primary">
+              {text.projects}
+              <FaArrowRight />
+            </a>
+
+            <a href="#contacto" className="btn btn-secondary">
+              {text.contact}
+            </a>
+
+            <a href="/cv.pdf" className="btn btn-outline" download>
+              <FaDownload />
+              {text.cv}
+            </a>
+          </div>
+
+          <div className="hero-socials" aria-label="Social links">
+            <a href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <FaGithub />
+            </a>
+
+            <a href="https://linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <FaLinkedin />
+            </a>
+
+            <a href="mailto:correo@ejemplo.com" aria-label="Email">
+              <FaEnvelope />
+            </a>
+          </div>
         </div>
-      </div>
 
-      <div className="code-card">
-        <div className="code-card-header">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div className="hero-image-wrapper" aria-hidden="true">
+          <div className="hero-image-glow" />
+
+          <div className="hero-image">
+            <Image
+              src="/images/profile/hero-profile.jpg"
+              alt=""
+              fill
+              sizes="(max-width: 980px) 78vw, 410px"
+              priority
+              loading="eager"
+            />
+          </div>
         </div>
-
-        <pre>
-          <code>{`const developer = {
-  name: "Eduardo",
-  role: "Software Engineering",
-  focus: ["Software", "Web", "Scalability"],
-  mindset: "Build. Learn. Improve."
-};`}</code>
-        </pre>
       </div>
     </section>
   );

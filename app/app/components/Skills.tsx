@@ -7,48 +7,39 @@ type SkillsProps = {
 export default function Skills({ language }: SkillsProps) {
   const content = {
     es: {
-      tag: "TECH STACK",
-      title: "Mis habilidades",
+      tag: "STACK TECNICO",
+      title: "Herramientas con las que construyo",
       description:
-        "Tecnolog\u00edas y herramientas que utilizo para desarrollar soluciones web, software y experiencias digitales.",
+        "Trabajo con tecnologias modernas para crear interfaces web, conectar servicios, modelar datos y mantener proyectos claros desde la idea hasta la entrega.",
+      groups: ["Frontend", "Backend", "Bases de datos", "Herramientas"],
     },
     en: {
       tag: "TECH STACK",
-      title: "My Skills",
+      title: "Tools I build with",
       description:
-        "Technologies and tools I use to build web solutions, software and digital experiences.",
+        "I use modern technologies to craft web interfaces, connect services, model data and keep projects clear from idea to delivery.",
+      groups: ["Frontend", "Backend", "Databases", "Tools"],
     },
   };
 
   const text = content[language];
 
   return (
-    <section id="habilidades" className="skills">
+    <section id="habilidades" className="skills" aria-labelledby="skills-title">
       <div className="skills-layout">
         <div className="skills-info">
           <p className="section-tag">{text.tag}</p>
-          <h2>{text.title}</h2>
+          <h2 id="skills-title">{text.title}</h2>
           <p>{text.description}</p>
 
-          <div className="skills-stats">
-            <div>
-              <strong>13+</strong>
-              <span>Tecnolog\u00edas</span>
-            </div>
-
-            <div>
-              <strong>4</strong>
-              <span>\u00c1reas</span>
-            </div>
-
-            <div>
-              <strong>3+</strong>
-              <span>Herramientas</span>
-            </div>
+          <div className="skills-pills" aria-label="Skill areas">
+            {text.groups.map((group) => (
+              <span key={group}>{group}</span>
+            ))}
           </div>
         </div>
 
-        <div className="skills-visual">
+        <div className="skills-visual" aria-label="Interactive technology globe">
           <SkillsGlobe />
         </div>
       </div>
