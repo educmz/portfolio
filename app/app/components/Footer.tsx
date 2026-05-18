@@ -15,7 +15,7 @@ export default function Footer({ language }: FooterProps) {
       rights: "Todos los derechos reservados.",
       links: {
         home: "Inicio",
-        projects: "Proyectos",
+        projects: "Portafolio",
         about: "Sobre mi",
         skills: "Stack",
         contact: "Contacto",
@@ -30,7 +30,7 @@ export default function Footer({ language }: FooterProps) {
       rights: "All rights reserved.",
       links: {
         home: "Home",
-        projects: "Projects",
+        projects: "Work",
         about: "About",
         skills: "Stack",
         contact: "Contact",
@@ -54,10 +54,10 @@ export default function Footer({ language }: FooterProps) {
 
         <nav className="footer-column" aria-label="Footer navigation">
           <h4>{text.navigation}</h4>
-          <a href="#">{text.links.home}</a>
-          <a href="#proyectos">{text.links.projects}</a>
-          <a href="#habilidades">{text.links.skills}</a>
+          <a href="#inicio">{text.links.home}</a>
           <a href="#sobre-mi">{text.links.about}</a>
+          <a href="#habilidades">{text.links.skills}</a>
+          <a href="#proyectos">{text.links.projects}</a>
           <a href="#contacto">{text.links.contact}</a>
         </nav>
 
@@ -76,9 +76,9 @@ export default function Footer({ language }: FooterProps) {
       </div>
 
       <div className="footer-bottom">
-        <p>© 2026 Eduardo Chacaliaza. {text.rights}</p>
+        <p>(c) 2026 Eduardo Chacaliaza. {text.rights}</p>
 
-        <a href="#" className="footer-top" aria-label="Back to top">
+        <a href="#inicio" className="footer-top" aria-label="Back to top">
           <FaArrowUp />
         </a>
       </div>

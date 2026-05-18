@@ -51,7 +51,7 @@ export default function Hero({ language }: HeroProps) {
   const text = content[language];
 
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section id="inicio" className="hero" aria-labelledby="hero-title">
       <div className="hero-background" aria-hidden="true" />
 
       <div className="hero-content">

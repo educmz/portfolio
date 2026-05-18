@@ -1,16 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-import { FaCertificate, FaCode, FaExternalLinkAlt, FaGithub, FaLinkedin } from "react-icons/fa";
+import {
+  FaCertificate,
+  FaCode,
+  FaExternalLinkAlt,
+  FaGithub,
+  FaLinkedin,
+  FaTimes,
+} from "react-icons/fa";
 
 type ProjectsProps = {
   language: "es" | "en";
+};
+
+type Certificate = {
+  name: string;
+  issuer: string;
+  year: string;
+  image: string;
 };
 
 export default function Projects({ language }: ProjectsProps) {
   const [activeTab, setActiveTab] = useState<"projects" | "certificates">(
     "projects",
   );
+  const [selectedCertificate, setSelectedCertificate] =
+    useState<Certificate | null>(null);
 
   const content = {
     es: {
@@ -21,9 +38,12 @@ export default function Projects({ language }: ProjectsProps) {
       projects: "Proyectos",
       certificates: "Certificados",
       start: "Start",
-      github: "Ver todo en GitHub",
-      linkedin: "Ver el resto en LinkedIn",
+      github: "Explorar repositorios",
+      linkedin: "Consultar credenciales",
       credential: "Credencial",
+      issuedBy: "Emitido por",
+      close: "Cerrar certificado",
+      imagePlaceholder: "Vista previa",
     },
     en: {
       tag: "PORTFOLIO",
@@ -33,9 +53,12 @@ export default function Projects({ language }: ProjectsProps) {
       projects: "Projects",
       certificates: "Certificates",
       start: "Start",
-      github: "See all on GitHub",
-      linkedin: "See more on LinkedIn",
+      github: "Explore repositories",
+      linkedin: "Review credentials",
       credential: "Credential",
+      issuedBy: "Issued by",
+      close: "Close certificate",
+      imagePlaceholder: "Preview",
     },
   };
 
@@ -52,6 +75,8 @@ export default function Projects({ language }: ProjectsProps) {
           : "Application for visualizing routes and supporting decisions through a clear, responsive interface.",
       tags: ["React", "Maps", "UX"],
       link: "#",
+      preview: ["Route planner", "Map layers", "Responsive UI"],
+      previewImage: "",
     },
     {
       number: "02",
@@ -63,6 +88,8 @@ export default function Projects({ language }: ProjectsProps) {
           : "Modular web project focused on management flows, reusable components and user experience.",
       tags: ["Next.js", "Node.js", "API"],
       link: "#",
+      preview: ["Dashboard", "Modules", "Reusable components"],
+      previewImage: "",
     },
     {
       number: "03",
@@ -74,6 +101,8 @@ export default function Projects({ language }: ProjectsProps) {
           : "Academic project focused on routes, optimization and result visualization.",
       tags: ["Algorithms", "React", "Data"],
       link: "#",
+      preview: ["Optimization", "Routes", "Results"],
+      previewImage: "",
     },
     {
       number: "04",
@@ -85,6 +114,8 @@ export default function Projects({ language }: ProjectsProps) {
           : "Personal interface optimized to present projects, skills and contact information.",
       tags: ["Next.js", "CSS", "SEO"],
       link: "#",
+      preview: ["Personal brand", "Sections", "Performance"],
+      previewImage: "",
     },
     {
       number: "05",
@@ -96,6 +127,8 @@ export default function Projects({ language }: ProjectsProps) {
           : "Practice in modeling, business logic and code organization for academic workflows.",
       tags: ["TypeScript", "Logic", "UI"],
       link: "#",
+      preview: ["Academic flows", "Modeling", "Validation"],
+      previewImage: "",
     },
     {
       number: "06",
@@ -107,22 +140,18 @@ export default function Projects({ language }: ProjectsProps) {
           : "Data integration exercise with queries, relational structure and control views.",
       tags: ["MySQL", "Node.js", "CRUD"],
       link: "#",
+      preview: ["Relational data", "Queries", "Control views"],
+      previewImage: "",
     },
   ];
 
-  const certificates = [
-    "React",
-    "JavaScript",
-    "TypeScript",
-    "Next.js",
-    "Node.js",
-    "Git",
-    "SQL",
-    "Python",
-    "UX Basics",
-    "Web Design",
-    "APIs",
-    "Software Engineering",
+  const certificates: Certificate[] = [
+    { name: "React", issuer: "Frontend Training", year: "2026", image: "" },
+    { name: "JavaScript", issuer: "Web Academy", year: "2026", image: "" },
+    { name: "TypeScript", issuer: "Developer Path", year: "2026", image: "" },
+    { name: "Next.js", issuer: "Frontend Training", year: "2026", image: "" },
+    { name: "Node.js", issuer: "Backend Lab", year: "2025", image: "" },
+    { name: "Git", issuer: "Developer Tools", year: "2025", image: "" },
   ];
 
   return (
@@ -158,11 +187,32 @@ export default function Projects({ language }: ProjectsProps) {
           </button>
         </div>
 
-        {activeTab === "projects" ? (
+        <div className="portfolio-panel">
+          {activeTab === "projects" ? (
           <>
             <div className="projects-showcase">
               {projects.map((project) => (
                 <article className="project-showcase-card" key={project.number}>
+                  <div className="project-preview" aria-hidden="true">
+                    {project.previewImage ? (
+                      <Image
+                        src={project.previewImage}
+                        alt=""
+                        fill
+                        sizes="(max-width: 1120px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <>
+                        <span className="preview-number">{project.number}</span>
+                        <div>
+                          {project.preview.map((item) => (
+                            <span key={item}>{item}</span>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
                   <div className="project-meta">
                     <span>{project.number}</span>
                     <span>{project.type}</span>
@@ -194,17 +244,40 @@ export default function Projects({ language }: ProjectsProps) {
               </a>
             </div>
           </>
-        ) : (
+          ) : (
           <>
             <div className="certificates-grid">
               {certificates.map((certificate) => (
-                <article className="certificate-card" key={certificate}>
-                  <span className="certificate-icon">
-                    <FaCertificate />
+                <button
+                  className="certificate-card"
+                  key={certificate.name}
+                  type="button"
+                  onClick={() => setSelectedCertificate(certificate)}
+                >
+                  <span className="certificate-preview" aria-hidden="true">
+                    {certificate.image ? (
+                      <Image
+                        src={certificate.image}
+                        alt=""
+                        fill
+                        sizes="(max-width: 1120px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <>
+                        <span className="certificate-ribbon" />
+                        <FaCertificate />
+                        <span className="certificate-preview-label">
+                          {text.imagePlaceholder}
+                        </span>
+                      </>
+                    )}
                   </span>
-                  <h3>{certificate}</h3>
-                  <p>{text.credential}</p>
-                </article>
+                  <span className="certificate-copy">
+                    <span className="certificate-name">{certificate.name}</span>
+                    <span>{certificate.issuer}</span>
+                    <span>{certificate.year}</span>
+                  </span>
+                </button>
               ))}
             </div>
 
@@ -215,8 +288,53 @@ export default function Projects({ language }: ProjectsProps) {
               </a>
             </div>
           </>
-        )}
+          )}
+        </div>
       </div>
+
+      {selectedCertificate ? (
+        <div
+          className="certificate-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="certificate-modal-title"
+          onClick={() => setSelectedCertificate(null)}
+        >
+          <div className="certificate-modal-card" onClick={(event) => event.stopPropagation()}>
+            <button
+              className="certificate-modal-close"
+              type="button"
+              aria-label={text.close}
+              onClick={() => setSelectedCertificate(null)}
+            >
+              <FaTimes />
+            </button>
+
+            <div className="certificate-sheet">
+              {selectedCertificate.image ? (
+                <Image
+                  src={selectedCertificate.image}
+                  alt={`${selectedCertificate.name} ${text.credential}`}
+                  fill
+                  sizes="min(100vw, 720px)"
+                />
+              ) : (
+                <>
+                  <span className="certificate-sheet-mark">
+                    <FaCertificate />
+                  </span>
+                  <p className="section-tag">{text.credential}</p>
+                  <h3 id="certificate-modal-title">{selectedCertificate.name}</h3>
+                  <p>
+                    {text.issuedBy}: {selectedCertificate.issuer}
+                  </p>
+                  <span>{selectedCertificate.year}</span>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

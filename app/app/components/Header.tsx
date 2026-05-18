@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
 
 type HeaderProps = {
@@ -10,6 +11,8 @@ type HeaderProps = {
   setTheme: (theme: "dark" | "light") => void;
 };
 
+const sectionIds = ["inicio", "sobre-mi", "habilidades", "proyectos", "contacto"];
+
 export default function Header({
   language,
   setLanguage,
@@ -17,11 +20,19 @@ export default function Header({
   setTheme,
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("inicio");
+  const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>({
+    opacity: 0,
+  });
+  const navRef = useRef<HTMLElement>(null);
+  const sectionRatios = useRef<Record<string, number>>({});
+  const lockedSection = useRef<string | null>(null);
+  const unlockTimer = useRef<number | null>(null);
 
   const content = {
     es: {
       home: "Inicio",
-      work: "Proyectos",
+      work: "Portafolio",
       skills: "Stack",
       about: "Sobre mi",
       contact: "Contacto",
@@ -29,6 +40,7 @@ export default function Header({
       menu: "Abrir menu",
       close: "Cerrar menu",
       theme: "Cambiar tema",
+      language: "Version en espanol",
     },
     en: {
       home: "Home",
@@ -40,15 +52,112 @@ export default function Header({
       menu: "Open menu",
       close: "Close menu",
       theme: "Toggle theme",
+      language: "English version",
     },
   };
 
   const text = content[language];
+  const navItems = [
+    { id: "inicio", href: "#inicio", label: text.home },
+    { id: "sobre-mi", href: "#sobre-mi", label: text.about },
+    { id: "habilidades", href: "#habilidades", label: text.skills },
+    { id: "proyectos", href: "#proyectos", label: text.work },
+    { id: "contacto", href: "#contacto", label: text.contact },
+  ];
+
+  useEffect(() => {
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          sectionRatios.current[entry.target.id] = entry.isIntersecting
+            ? entry.intersectionRatio
+            : 0;
+        });
+
+        if (lockedSection.current) {
+          const lockedRatio = sectionRatios.current[lockedSection.current] ?? 0;
+
+          if (lockedRatio < 0.24) {
+            return;
+          }
+
+          lockedSection.current = null;
+        }
+
+        const visibleSection = sectionIds.reduce((current, sectionId) => {
+          const currentRatio = sectionRatios.current[current] ?? 0;
+          const nextRatio = sectionRatios.current[sectionId] ?? 0;
+
+          return nextRatio > currentRatio ? sectionId : current;
+        }, sectionIds[0]);
+
+        setActiveSection(visibleSection);
+      },
+      {
+        rootMargin: "-28% 0px -48% 0px",
+        threshold: [0, 0.16, 0.28, 0.42, 0.58],
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      const nav = navRef.current;
+      const activeLink = nav?.querySelector<HTMLAnchorElement>(
+        `a[data-section="${activeSection}"]`,
+      );
+
+      if (!nav || !activeLink) {
+        setIndicatorStyle({ opacity: 0 });
+        return;
+      }
+
+      setIndicatorStyle({
+        opacity: 1,
+        transform: `translate3d(${activeLink.offsetLeft}px, ${activeLink.offsetTop}px, 0)`,
+        width: activeLink.offsetWidth,
+        height: activeLink.offsetHeight,
+      });
+    };
+
+    updateIndicator();
+
+    const frame = window.requestAnimationFrame(updateIndicator);
+    window.addEventListener("resize", updateIndicator);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", updateIndicator);
+    };
+  }, [activeSection, language, menuOpen]);
+
+  const handleNavClick = (sectionId: string) => {
+    lockedSection.current = sectionId;
+    setActiveSection(sectionId);
+    setMenuOpen(false);
+
+    if (unlockTimer.current) {
+      window.clearTimeout(unlockTimer.current);
+    }
+
+    unlockTimer.current = window.setTimeout(() => {
+      lockedSection.current = null;
+    }, 1200);
+  };
+
   const closeMenu = () => setMenuOpen(false);
 
   return (
     <header className="header">
-      <a href="#" className="header-brand" onClick={closeMenu}>
+      <a href="#inicio" className="header-brand" onClick={closeMenu}>
         <span className="brand-mark" aria-hidden="true">
           EC
         </span>
@@ -66,24 +175,28 @@ export default function Header({
       </button>
 
       <nav
+        ref={navRef}
         className={`header-nav ${menuOpen ? "is-open" : ""}`}
         aria-label="Main navigation"
       >
-        <a href="#" className="active" onClick={closeMenu}>
-          {text.home}
-        </a>
-        <a href="#proyectos" onClick={closeMenu}>
-          {text.work}
-        </a>
-        <a href="#habilidades" onClick={closeMenu}>
-          {text.skills}
-        </a>
-        <a href="#sobre-mi" onClick={closeMenu}>
-          {text.about}
-        </a>
-        <a href="#contacto" onClick={closeMenu}>
-          {text.contact}
-        </a>
+        <span
+          className="nav-active-pill"
+          style={indicatorStyle}
+          aria-hidden="true"
+        />
+
+        {navItems.map((item) => (
+          <a
+            key={item.id}
+            href={item.href}
+            data-section={item.id}
+            className={activeSection === item.id ? "active" : ""}
+            aria-current={activeSection === item.id ? "page" : undefined}
+            onClick={() => handleNavClick(item.id)}
+          >
+            {item.label}
+          </a>
+        ))}
       </nav>
 
       <div className="header-actions">
@@ -99,10 +212,11 @@ export default function Header({
         <button
           className="language-button"
           type="button"
-          aria-label="Change language"
+          aria-label={text.language}
           onClick={() => setLanguage(language === "es" ? "en" : "es")}
         >
-          {language === "es" ? "EN" : "ES"}
+          <span aria-hidden="true">{language === "es" ? "🇪🇸" : "🇺🇸"}</span>
+          <span>{language === "es" ? "ES" : "EN"}</span>
         </button>
 
         <a href="#contacto" className="talk-button" onClick={closeMenu}>
