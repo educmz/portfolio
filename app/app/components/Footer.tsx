@@ -1,10 +1,17 @@
+"use client";
+
 import { FaArrowUp, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import { openFloatingContact } from "./FloatingContact";
 
 type FooterProps = {
   language: "es" | "en";
 };
 
 export default function Footer({ language }: FooterProps) {
+  const githubHref = "https://github.com/educmz";
+  const linkedinHref =
+    "https://www.linkedin.com/in/eduardo-chacaliaza-minaya/";
+
   const content = {
     es: {
       role: "Frontend & Software Developer",
@@ -63,15 +70,15 @@ export default function Footer({ language }: FooterProps) {
 
         <div className="footer-column">
           <h4>{text.connect}</h4>
-          <a href="https://github.com/" target="_blank" rel="noreferrer">
+          <a href={githubHref} target="_blank" rel="noreferrer">
             <FaGithub /> GitHub
           </a>
-          <a href="https://linkedin.com/" target="_blank" rel="noreferrer">
+          <a href={linkedinHref} target="_blank" rel="noreferrer">
             <FaLinkedin /> LinkedIn
           </a>
-          <a href="mailto:correo@ejemplo.com">
+          <button type="button" onClick={openFloatingContact}>
             <FaEnvelope /> Email
-          </a>
+          </button>
         </div>
       </div>
 

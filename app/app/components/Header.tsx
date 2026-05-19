@@ -1,8 +1,15 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
-import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
+import {
+  FaCheck,
+  FaChevronDown,
+  FaGlobe,
+  FaMoon,
+  FaSun,
+} from "react-icons/fa";
+import { openFloatingContact } from "./FloatingContact";
 
 type HeaderProps = {
   language: "es" | "en";
@@ -20,12 +27,18 @@ export default function Header({
   setTheme,
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("inicio");
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const [visualActiveSection, setVisualActiveSection] = useState("inicio");
+  const [forcedActiveSection, setForcedActiveSection] = useState<string | null>(
+    null,
+  );
   const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>({
     opacity: 0,
   });
   const navRef = useRef<HTMLElement>(null);
-  const sectionRatios = useRef<Record<string, number>>({});
+  const languageRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const scrollFrame = useRef<number | null>(null);
   const lockedSection = useRef<string | null>(null);
   const unlockTimer = useRef<number | null>(null);
 
@@ -40,7 +53,13 @@ export default function Header({
       menu: "Abrir menu",
       close: "Cerrar menu",
       theme: "Cambiar tema",
-      language: "Version en espanol",
+      language: "Cambiar idioma",
+      languageMenu: "Seleccionar idioma",
+      currentLanguage: "Espa\u00f1ol",
+      themeControl: "Tema",
+      languageControl: "Idioma",
+      lightMode: "Cambiar a modo claro",
+      darkMode: "Cambiar a modo oscuro",
     },
     en: {
       home: "Home",
@@ -52,7 +71,13 @@ export default function Header({
       menu: "Open menu",
       close: "Close menu",
       theme: "Toggle theme",
-      language: "English version",
+      language: "Change language",
+      languageMenu: "Select language",
+      currentLanguage: "English",
+      themeControl: "Theme",
+      languageControl: "Language",
+      lightMode: "Switch to light mode",
+      darkMode: "Switch to dark mode",
     },
   };
 
@@ -64,55 +89,73 @@ export default function Header({
     { id: "proyectos", href: "#proyectos", label: text.work },
     { id: "contacto", href: "#contacto", label: text.contact },
   ];
+  const effectiveActiveSection = forcedActiveSection ?? visualActiveSection;
 
   useEffect(() => {
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
+    let frame = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          sectionRatios.current[entry.target.id] = entry.isIntersecting
-            ? entry.intersectionRatio
-            : 0;
-        });
+    const updateActiveSection = () => {
+      if (lockedSection.current) {
+        return;
+      }
 
-        if (lockedSection.current) {
-          const lockedRatio = sectionRatios.current[lockedSection.current] ?? 0;
+      const headerHeight =
+        document.querySelector<HTMLElement>(".header")?.offsetHeight ?? 0;
+      const activationLine =
+        headerHeight + Math.min(window.innerHeight * 0.3, 220);
+      const pageBottom =
+        window.innerHeight + window.scrollY >= document.body.scrollHeight - 2;
 
-          if (lockedRatio < 0.24) {
-            return;
-          }
+      if (pageBottom) {
+        setVisualActiveSection(sectionIds[sectionIds.length - 1]);
+        return;
+      }
 
-          lockedSection.current = null;
-        }
+      const currentSection = sections.reduce((current, section) => {
+        return section.getBoundingClientRect().top <= activationLine
+          ? section.id
+          : current;
+      }, sectionIds[0]);
 
-        const visibleSection = sectionIds.reduce((current, sectionId) => {
-          const currentRatio = sectionRatios.current[current] ?? 0;
-          const nextRatio = sectionRatios.current[sectionId] ?? 0;
+      setVisualActiveSection(currentSection);
+    };
 
-          return nextRatio > currentRatio ? sectionId : current;
-        }, sectionIds[0]);
+    const requestUpdate = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateActiveSection);
+    };
 
-        setActiveSection(visibleSection);
-      },
-      {
-        rootMargin: "-28% 0px -48% 0px",
-        threshold: [0, 0.16, 0.28, 0.42, 0.58],
-      },
-    );
+    updateActiveSection();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
-    sections.forEach((section) => observer.observe(section));
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
 
-    return () => observer.disconnect();
+  useEffect(() => {
+    return () => {
+      if (scrollFrame.current) {
+        window.cancelAnimationFrame(scrollFrame.current);
+      }
+
+      if (unlockTimer.current) {
+        window.clearTimeout(unlockTimer.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
     const updateIndicator = () => {
       const nav = navRef.current;
       const activeLink = nav?.querySelector<HTMLAnchorElement>(
-        `a[data-section="${activeSection}"]`,
+        `a[data-section="${effectiveActiveSection}"]`,
       );
 
       if (!nav || !activeLink) {
@@ -137,27 +180,130 @@ export default function Header({
       window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", updateIndicator);
     };
-  }, [activeSection, language, menuOpen]);
+  }, [effectiveActiveSection, language, menuOpen]);
 
-  const handleNavClick = (sectionId: string) => {
-    lockedSection.current = sectionId;
-    setActiveSection(sectionId);
-    setMenuOpen(false);
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!languageRef.current?.contains(event.target as Node)) {
+        setLanguageOpen(false);
+      }
+
+      if (
+        menuOpen &&
+        !headerRef.current?.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setLanguageOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
+
+  const scrollToY = (targetTop: number, targetSection: string) => {
+    if (scrollFrame.current) {
+      window.cancelAnimationFrame(scrollFrame.current);
+    }
+
+    lockedSection.current = targetSection;
+    setForcedActiveSection(targetSection);
+    setVisualActiveSection(targetSection);
 
     if (unlockTimer.current) {
       window.clearTimeout(unlockTimer.current);
     }
 
-    unlockTimer.current = window.setTimeout(() => {
-      lockedSection.current = null;
-    }, 1200);
+    const startTop = window.scrollY;
+    const distance = targetTop - startTop;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reduceMotion || Math.abs(distance) < 2) {
+      window.scrollTo(0, targetTop);
+      setVisualActiveSection(targetSection);
+      unlockTimer.current = window.setTimeout(() => {
+        lockedSection.current = null;
+        setForcedActiveSection(null);
+      }, 120);
+      return;
+    }
+
+    const duration = Math.min(340, Math.max(140, Math.abs(distance) * 0.12));
+    const startTime = performance.now();
+
+    const step = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      window.scrollTo(0, startTop + distance * eased);
+
+      if (progress < 1) {
+        scrollFrame.current = window.requestAnimationFrame(step);
+      } else {
+        scrollFrame.current = null;
+        setVisualActiveSection(targetSection);
+        unlockTimer.current = window.setTimeout(() => {
+          lockedSection.current = null;
+          setForcedActiveSection(null);
+        }, 140);
+      }
+    };
+
+    scrollFrame.current = window.requestAnimationFrame(step);
   };
 
-  const closeMenu = () => setMenuOpen(false);
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    sectionId: string,
+  ) => {
+    event.preventDefault();
+
+    const section = document.getElementById(sectionId);
+    const headerHeight =
+      document.querySelector<HTMLElement>(".header")?.offsetHeight ?? 0;
+
+    if (section) {
+      const top = Math.max(
+        section.getBoundingClientRect().top + window.scrollY - headerHeight,
+        0,
+      );
+
+      scrollToY(top, sectionId);
+      window.history.pushState(null, "", `#${sectionId}`);
+    }
+
+    setMenuOpen(false);
+  };
+
+  const languageOptions = [
+    { code: "es", label: "Espa\u00f1ol", short: "ES" },
+    { code: "en", label: "English", short: "EN" },
+  ] as const;
+
+  const handleLanguageSelect = (nextLanguage: "es" | "en") => {
+    setLanguage(nextLanguage);
+    setLanguageOpen(false);
+  };
 
   return (
-    <header className="header">
-      <a href="#inicio" className="header-brand" onClick={closeMenu}>
+    <header className="header" ref={headerRef}>
+      <a
+        href="#inicio"
+        className="header-brand"
+        onClick={(event) => handleNavClick(event, "inicio")}
+      >
         <span className="brand-mark" aria-hidden="true">
           EC
         </span>
@@ -171,7 +317,9 @@ export default function Header({
         aria-expanded={menuOpen}
         onClick={() => setMenuOpen((open) => !open)}
       >
-        {menuOpen ? <FaTimes /> : <FaBars />}
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
       </button>
 
       <nav
@@ -190,38 +338,129 @@ export default function Header({
             key={item.id}
             href={item.href}
             data-section={item.id}
-            className={activeSection === item.id ? "active" : ""}
-            aria-current={activeSection === item.id ? "page" : undefined}
-            onClick={() => handleNavClick(item.id)}
+            className={effectiveActiveSection === item.id ? "active" : ""}
+            aria-current={effectiveActiveSection === item.id ? "page" : undefined}
+            onClick={(event) => handleNavClick(event, item.id)}
           >
             {item.label}
           </a>
         ))}
+
+        <div className="mobile-menu-controls">
+          <div className="mobile-control-row">
+            <span>{text.themeControl}</span>
+            <button
+              className={`theme-switch mobile-theme-switch ${
+                theme === "light" ? "is-light" : "is-dark"
+              }`}
+              type="button"
+              aria-label={theme === "dark" ? text.lightMode : text.darkMode}
+              aria-pressed={theme === "light"}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <span className="theme-switch-track" aria-hidden="true">
+                <span className="theme-switch-icon theme-switch-sun">
+                  <FaSun />
+                </span>
+                <span className="theme-switch-icon theme-switch-moon">
+                  <FaMoon />
+                </span>
+                <span className="theme-switch-thumb">
+                  {theme === "dark" ? <FaMoon /> : <FaSun />}
+                </span>
+              </span>
+            </button>
+          </div>
+
+          <div className="mobile-control-row">
+            <span>{text.languageControl}</span>
+            <div className="mobile-language-segment" aria-label={text.languageMenu}>
+              {languageOptions.map((option) => (
+                <button
+                  key={option.code}
+                  className={`mobile-language-segment-option ${
+                    language === option.code ? "is-active" : ""
+                  }`}
+                  type="button"
+                  aria-pressed={language === option.code}
+                  onClick={() => handleLanguageSelect(option.code)}
+                >
+                  <span>{option.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </nav>
 
       <div className="header-actions">
         <button
-          className="icon-button"
+          className={`theme-switch ${theme === "light" ? "is-light" : "is-dark"}`}
           type="button"
-          aria-label={text.theme}
+          aria-label={theme === "dark" ? text.lightMode : text.darkMode}
+          aria-pressed={theme === "light"}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
-          {theme === "dark" ? <FaSun /> : <FaMoon />}
+          <span className="theme-switch-track" aria-hidden="true">
+            <span className="theme-switch-icon theme-switch-sun">
+              <FaSun />
+            </span>
+            <span className="theme-switch-icon theme-switch-moon">
+              <FaMoon />
+            </span>
+            <span className="theme-switch-thumb">
+              {theme === "dark" ? <FaMoon /> : <FaSun />}
+            </span>
+          </span>
         </button>
+
+        <div className="language-select" ref={languageRef}>
+          <button
+            className="language-trigger"
+            type="button"
+            aria-label={text.languageMenu}
+            aria-haspopup="listbox"
+            aria-expanded={languageOpen}
+            onClick={() => setLanguageOpen((open) => !open)}
+          >
+            <FaGlobe aria-hidden="true" />
+            <span>{text.currentLanguage}</span>
+            <FaChevronDown className="language-chevron" aria-hidden="true" />
+          </button>
+
+          <div
+            className={`language-dropdown ${languageOpen ? "is-open" : ""}`}
+            role="listbox"
+            aria-label={text.languageMenu}
+          >
+            {languageOptions.map((option) => (
+              <button
+                key={option.code}
+                className={`language-option ${
+                  language === option.code ? "is-active" : ""
+                }`}
+                type="button"
+                role="option"
+                aria-selected={language === option.code}
+                onClick={() => handleLanguageSelect(option.code)}
+              >
+                <span className="language-option-copy">
+                  <span>{option.label}</span>
+                  <small>{option.short}</small>
+                </span>
+                <FaCheck aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        </div>
 
         <button
-          className="language-button"
+          className="talk-button"
           type="button"
-          aria-label={text.language}
-          onClick={() => setLanguage(language === "es" ? "en" : "es")}
+          onClick={openFloatingContact}
         >
-          <span aria-hidden="true">{language === "es" ? "🇪🇸" : "🇺🇸"}</span>
-          <span>{language === "es" ? "ES" : "EN"}</span>
-        </button>
-
-        <a href="#contacto" className="talk-button" onClick={closeMenu}>
           {text.talk}
-        </a>
+        </button>
       </div>
     </header>
   );

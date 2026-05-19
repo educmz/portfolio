@@ -28,6 +28,9 @@ export default function Projects({ language }: ProjectsProps) {
   );
   const [selectedCertificate, setSelectedCertificate] =
     useState<Certificate | null>(null);
+  const githubHref = "https://github.com/educmz";
+  const linkedinHref =
+    "https://www.linkedin.com/in/eduardo-chacaliaza-minaya/";
 
   const content = {
     es: {
@@ -146,12 +149,42 @@ export default function Projects({ language }: ProjectsProps) {
   ];
 
   const certificates: Certificate[] = [
-    { name: "React", issuer: "Frontend Training", year: "2026", image: "" },
-    { name: "JavaScript", issuer: "Web Academy", year: "2026", image: "" },
-    { name: "TypeScript", issuer: "Developer Path", year: "2026", image: "" },
-    { name: "Next.js", issuer: "Frontend Training", year: "2026", image: "" },
-    { name: "Node.js", issuer: "Backend Lab", year: "2025", image: "" },
-    { name: "Git", issuer: "Developer Tools", year: "2025", image: "" },
+    {
+      name: "HTML: Creación de páginas web",
+      issuer: "Netzun",
+      year: "2025",
+      image: "/certificates/html-netzun.jpg",
+    },
+    {
+      name: "Introduction to MongoDB",
+      issuer: "MongoDB University",
+      year: "2025",
+      image: "/certificates/mongodb.jpg",
+    },
+    {
+      name: "Scrum Fundamentals",
+      issuer: "SCRUMstudy",
+      year: "2025",
+      image: "/certificates/scrum-fundamentals.jpg",
+    },
+    {
+      name: "Generative AI: Prompt Engineering Basics",
+      issuer: "IBM / Coursera",
+      year: "2025",
+      image: "/certificates/ibm-prompt-engineering.jpg",
+    },
+    {
+      name: "Generative AI: Introduction and Applications",
+      issuer: "IBM / Coursera",
+      year: "2025",
+      image: "/certificates/ibm-generative-ai-intro.jpg",
+    },
+    {
+      name: "Generative AI: Foundation Models and Platforms",
+      issuer: "IBM / Coursera",
+      year: "2025",
+      image: "/certificates/ibm-foundation-models.jpg",
+    },
   ];
 
   return (
@@ -238,7 +271,7 @@ export default function Projects({ language }: ProjectsProps) {
             </div>
 
             <div className="section-cta">
-              <a href="https://github.com/" target="_blank" rel="noreferrer" className="btn btn-outline">
+              <a href={githubHref} target="_blank" rel="noreferrer" className="btn btn-outline">
                 <FaGithub />
                 {text.github}
               </a>
@@ -282,7 +315,7 @@ export default function Projects({ language }: ProjectsProps) {
             </div>
 
             <div className="section-cta">
-              <a href="https://linkedin.com/" target="_blank" rel="noreferrer" className="btn btn-outline">
+              <a href={linkedinHref} target="_blank" rel="noreferrer" className="btn btn-outline">
                 <FaLinkedin />
                 {text.linkedin}
               </a>

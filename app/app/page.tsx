@@ -8,6 +8,7 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import FloatingContact from "./components/FloatingContact";
 
 export default function Home() {
   const [language, setLanguage] = useState<"es" | "en">("es");
@@ -36,6 +37,7 @@ export default function Home() {
         <Projects language={language} />
         <Contact language={language} />
         <Footer language={language} />
+        <FloatingContact />
       </main>
     </>
   );

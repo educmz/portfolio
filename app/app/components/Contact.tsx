@@ -1,31 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaDownload, FaEnvelope, FaGithub, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import { openFloatingContact } from "./FloatingContact";
 
 type ContactProps = {
   language: "es" | "en";
 };
 
 export default function Contact({ language }: ContactProps) {
+  const email = "echacaliazaminaya@gmail.com";
+  const githubHref = "https://github.com/educmz";
+  const linkedinHref =
+    "https://www.linkedin.com/in/eduardo-chacaliaza-minaya/";
+
   const content = {
     es: {
       tag: "CONTACTO",
-      title: "Conversemos sobre tu proximo proyecto",
+      title: "Hablemos de lo que quieres construir",
       text:
-        "Si tienes una idea, una oportunidad de colaboracion o un proyecto web en marcha, puedo ayudarte a convertirlo en una experiencia clara, funcional y bien construida.",
-      email: "Enviar correo",
-      cv: "Descargar CV",
-      phone: "Telefono",
+        "Si tienes una idea, una oportunidad de colaboracion o un proyecto web en marcha, escribeme y revisamos como llevarlo a una experiencia clara, funcional y bien cuidada.",
+      email: "Escribirme",
+      github: "Ver GitHub",
+      linkedin: "Conectar en LinkedIn",
     },
     en: {
       tag: "CONTACT",
-      title: "Let's talk about your next project",
+      title: "Let's talk about what you want to build",
       text:
-        "If you have an idea, a collaboration opportunity or an active web project, I can help turn it into a clear, functional and well-built experience.",
-      email: "Send email",
-      cv: "Download CV",
-      phone: "Phone",
+        "If you have an idea, a collaboration opportunity or a web project in motion, reach out and we can shape it into a clear, functional and polished experience.",
+      email: "Write me",
+      github: "View GitHub",
+      linkedin: "Connect on LinkedIn",
     },
   };
 
@@ -45,33 +51,38 @@ export default function Contact({ language }: ContactProps) {
         <p>{text.text}</p>
 
         <div className="contact-actions">
-          <a href="mailto:correo@ejemplo.com" className="btn btn-primary">
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={openFloatingContact}
+          >
             <FaEnvelope />
             {text.email}
-          </a>
+          </button>
 
-          <a href="/cv.pdf" className="btn btn-secondary" download>
-            <FaDownload />
-            {text.cv}
+          <a
+            href={linkedinHref}
+            className="btn btn-secondary"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FaLinkedin />
+            LinkedIn
           </a>
         </div>
 
         <div className="contact-grid" aria-label="Contact details">
-          <a href="mailto:correo@ejemplo.com">
+          <button type="button" onClick={openFloatingContact}>
             <FaEnvelope />
-            <span>correo@ejemplo.com</span>
-          </a>
-          <a href="tel:+51999999999">
-            <FaPhoneAlt />
-            <span>{text.phone}: +51 999 999 999</span>
-          </a>
-          <a href="https://linkedin.com/" target="_blank" rel="noreferrer">
+            <span>{email}</span>
+          </button>
+          <a href={linkedinHref} target="_blank" rel="noreferrer">
             <FaLinkedin />
-            <span>LinkedIn</span>
+            <span>{text.linkedin}</span>
           </a>
-          <a href="https://github.com/" target="_blank" rel="noreferrer">
+          <a href={githubHref} target="_blank" rel="noreferrer">
             <FaGithub />
-            <span>GitHub</span>
+            <span>{text.github}</span>
           </a>
         </div>
       </motion.div>

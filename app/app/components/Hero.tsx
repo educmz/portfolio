@@ -9,12 +9,17 @@ import {
   FaGithub,
   FaLinkedin,
 } from "react-icons/fa";
+import { openFloatingContact } from "./FloatingContact";
 
 type HeroProps = {
   language: "es" | "en";
 };
 
 export default function Hero({ language }: HeroProps) {
+  const githubHref = "https://github.com/educmz";
+  const linkedinHref =
+    "https://www.linkedin.com/in/eduardo-chacaliaza-minaya/";
+
   const content = {
     es: {
       hello: "Hola, soy",
@@ -91,9 +96,13 @@ export default function Hero({ language }: HeroProps) {
               <FaArrowRight />
             </a>
 
-            <a href="#contacto" className="btn btn-secondary">
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={openFloatingContact}
+            >
               {text.contact}
-            </a>
+            </button>
 
             <a href="/cv.pdf" className="btn btn-outline" download>
               <FaDownload />
@@ -102,17 +111,17 @@ export default function Hero({ language }: HeroProps) {
           </div>
 
           <div className="hero-socials" aria-label="Social links">
-            <a href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <a href={githubHref} target="_blank" rel="noreferrer" aria-label="GitHub">
               <FaGithub />
             </a>
 
-            <a href="https://linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <a href={linkedinHref} target="_blank" rel="noreferrer" aria-label="LinkedIn">
               <FaLinkedin />
             </a>
 
-            <a href="mailto:correo@ejemplo.com" aria-label="Email">
+            <button type="button" onClick={openFloatingContact} aria-label="Email">
               <FaEnvelope />
-            </a>
+            </button>
           </div>
         </div>
 
