@@ -14,30 +14,36 @@ export default function Footer({ language }: FooterProps) {
 
   const content = {
     es: {
-      role: "Frontend & Software Developer",
+      role: "Full Stack Developer",
       description:
-        "Portafolio personal de desarrollo web, proyectos academicos y soluciones digitales.",
+        "Creando soluciones digitales utiles, escalables y bien disenadas: desde interfaces web hasta sistemas, automatizaciones e integracion de IA.",
       navigation: "Navegacion",
       connect: "Canales",
       rights: "Todos los derechos reservados.",
+      footerNav: "Navegacion del footer",
+      email: "Abrir formulario de contacto",
+      top: "Volver al inicio",
       links: {
         home: "Inicio",
-        projects: "Portafolio",
+        projects: "Portfolio",
         about: "Sobre mi",
         skills: "Stack",
         contact: "Contacto",
       },
     },
     en: {
-      role: "Frontend & Software Developer",
+      role: "Full Stack Developer",
       description:
-        "Personal portfolio for web development, academic projects and digital solutions.",
+        "Creating useful, scalable and well-designed digital solutions: from web interfaces to systems, automations and AI integration.",
       navigation: "Navigation",
       connect: "Channels",
       rights: "All rights reserved.",
+      footerNav: "Footer navigation",
+      email: "Open contact form",
+      top: "Back to top",
       links: {
         home: "Home",
-        projects: "Work",
+        projects: "Portfolio",
         about: "About",
         skills: "Stack",
         contact: "Contact",
@@ -51,15 +57,12 @@ export default function Footer({ language }: FooterProps) {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-brand">
-          <span className="brand-mark" aria-hidden="true">
-            EC
-          </span>
           <h3>Eduardo Chacaliaza</h3>
           <p className="footer-role">{text.role}</p>
           <p>{text.description}</p>
         </div>
 
-        <nav className="footer-column" aria-label="Footer navigation">
+        <nav className="footer-column" aria-label={text.footerNav}>
           <h4>{text.navigation}</h4>
           <a href="#inicio">{text.links.home}</a>
           <a href="#sobre-mi">{text.links.about}</a>
@@ -76,7 +79,7 @@ export default function Footer({ language }: FooterProps) {
           <a href={linkedinHref} target="_blank" rel="noreferrer">
             <FaLinkedin /> LinkedIn
           </a>
-          <button type="button" onClick={openFloatingContact}>
+          <button type="button" onClick={openFloatingContact} aria-label={text.email}>
             <FaEnvelope /> Email
           </button>
         </div>
@@ -85,7 +88,7 @@ export default function Footer({ language }: FooterProps) {
       <div className="footer-bottom">
         <p>(c) 2026 Eduardo Chacaliaza. {text.rights}</p>
 
-        <a href="#inicio" className="footer-top" aria-label="Back to top">
+        <a href="#inicio" className="footer-top" aria-label={text.top}>
           <FaArrowUp />
         </a>
       </div>

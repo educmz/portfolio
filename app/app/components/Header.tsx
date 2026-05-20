@@ -47,19 +47,18 @@ export default function Header({
       home: "Inicio",
       work: "Portafolio",
       skills: "Stack",
-      about: "Sobre mi",
+      about: "Sobre mí",
       contact: "Contacto",
-      talk: "Contactame",
-      menu: "Abrir menu",
-      close: "Cerrar menu",
-      theme: "Cambiar tema",
-      language: "Cambiar idioma",
+      talk: "Escríbeme",
+      menu: "Abrir menú",
+      close: "Cerrar menú",
       languageMenu: "Seleccionar idioma",
-      currentLanguage: "Espa\u00f1ol",
+      currentLanguage: "Español",
       themeControl: "Tema",
       languageControl: "Idioma",
       lightMode: "Cambiar a modo claro",
       darkMode: "Cambiar a modo oscuro",
+      nav: "Navegación principal",
     },
     en: {
       home: "Home",
@@ -70,14 +69,13 @@ export default function Header({
       talk: "Contact me",
       menu: "Open menu",
       close: "Close menu",
-      theme: "Toggle theme",
-      language: "Change language",
       languageMenu: "Select language",
       currentLanguage: "English",
       themeControl: "Theme",
       languageControl: "Language",
       lightMode: "Switch to light mode",
       darkMode: "Switch to dark mode",
+      nav: "Main navigation",
     },
   };
 
@@ -188,10 +186,7 @@ export default function Header({
         setLanguageOpen(false);
       }
 
-      if (
-        menuOpen &&
-        !headerRef.current?.contains(event.target as Node)
-      ) {
+      if (menuOpen && !headerRef.current?.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     };
@@ -288,7 +283,7 @@ export default function Header({
   };
 
   const languageOptions = [
-    { code: "es", label: "Espa\u00f1ol", short: "ES" },
+    { code: "es", label: "Español", short: "ES" },
     { code: "en", label: "English", short: "EN" },
   ] as const;
 
@@ -304,10 +299,11 @@ export default function Header({
         className="header-brand"
         onClick={(event) => handleNavClick(event, "inicio")}
       >
-        <span className="brand-mark" aria-hidden="true">
-          EC
+        <span className="brand-wordmark" aria-label="Eduardo">
+          <span className="brand-token" aria-hidden="true">&lt;</span>
+          <span className="brand-name">Eduardo</span>
+          <span className="brand-token" aria-hidden="true">/&gt;</span>
         </span>
-        <span>Eduardo Chacaliaza</span>
       </a>
 
       <button
@@ -325,7 +321,7 @@ export default function Header({
       <nav
         ref={navRef}
         className={`header-nav ${menuOpen ? "is-open" : ""}`}
-        aria-label="Main navigation"
+        aria-label={text.nav}
       >
         <span
           className="nav-active-pill"

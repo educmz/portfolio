@@ -4,15 +4,15 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://eduardo-chacaliaza.dev"),
   title: {
-    default: "Eduardo Chacaliaza | Frontend & Software Developer",
+    default: "Eduardo Chacaliaza | Portfolio",
     template: "%s | Eduardo Chacaliaza",
   },
   description:
-    "Portafolio de Eduardo Chacaliaza, desarrollador web y estudiante de Ingenieria de Software enfocado en React, Next.js, frontend y proyectos web funcionales.",
+    "Portafolio de Eduardo Chacaliaza, desarrollador full stack orientado a aplicaciones web, desktop, sistemas modernos e inteligencia artificial.",
   keywords: [
     "Eduardo Chacaliaza",
     "desarrollador web",
-    "frontend developer",
+    "full stack developer",
     "software developer",
     "portfolio",
     "react developer",
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US"],
     url: "/",
     siteName: "Eduardo Chacaliaza Portfolio",
-    title: "Eduardo Chacaliaza | Frontend & Software Developer",
+    title: "Eduardo Chacaliaza | Portfolio",
     description:
-      "Proyectos web, habilidades y certificados de Eduardo Chacaliaza, desarrollador frontend y estudiante de Ingenieria de Software.",
+      "Proyectos, habilidades y certificados de Eduardo Chacaliaza, desarrollador full stack enfocado en software moderno, producto e IA.",
     images: [
       {
         url: "/images/profile/hero-profile.jpg",
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eduardo Chacaliaza | Frontend & Software Developer",
+    title: "Eduardo Chacaliaza | Portfolio",
     description:
-      "Portfolio de desarrollo web, React, Next.js y proyectos de software.",
+      "Portfolio de desarrollo full stack, aplicaciones web, desktop e inteligencia artificial.",
     images: ["/images/profile/hero-profile.jpg"],
   },
   robots: {

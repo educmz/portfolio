@@ -7,18 +7,22 @@ type SkillsProps = {
 export default function Skills({ language }: SkillsProps) {
   const content = {
     es: {
-      tag: "STACK TECNICO",
-      title: "Herramientas con las que construyo",
+      tag: "STACK TÉCNICO",
+      title: "Stack para construir software completo",
       description:
-        "Trabajo con tecnologias modernas para crear interfaces web, conectar servicios, modelar datos y mantener proyectos claros desde la idea hasta la entrega.",
-      groups: ["Frontend", "Backend", "Bases de datos", "Herramientas"],
+        "Combino tecnologías de interfaz, backend y datos para llevar productos desde el prototipo hasta una base mantenible y lista para crecer.",
+      groups: ["Frontend", "Backend", "Base de datos"],
+      areas: "Áreas técnicas",
+      globe: "Globo interactivo de tecnologías",
     },
     en: {
       tag: "TECH STACK",
-      title: "Tools I build with",
+      title: "A stack for complete software",
       description:
-        "I use modern technologies to craft web interfaces, connect services, model data and keep projects clear from idea to delivery.",
-      groups: ["Frontend", "Backend", "Databases", "Tools"],
+        "I combine interface, backend and data technologies to move products from prototype to a maintainable foundation ready to grow.",
+      groups: ["Frontend", "Backend", "Database"],
+      areas: "Technical areas",
+      globe: "Interactive technology globe",
     },
   };
 
@@ -32,14 +36,14 @@ export default function Skills({ language }: SkillsProps) {
           <h2 id="skills-title">{text.title}</h2>
           <p>{text.description}</p>
 
-          <div className="skills-pills" aria-label="Skill areas">
+          <div className="skills-pills" aria-label={text.areas}>
             {text.groups.map((group) => (
               <span key={group}>{group}</span>
             ))}
           </div>
         </div>
 
-        <div className="skills-visual" aria-label="Interactive technology globe">
+        <div className="skills-visual" aria-label={text.globe}>
           <SkillsGlobe />
         </div>
       </div>

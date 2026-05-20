@@ -24,32 +24,40 @@ export default function Hero({ language }: HeroProps) {
     es: {
       hello: "Hola, soy",
       description:
-        "Estudiante de Ingenieria de Software enfocado en crear interfaces claras, aplicaciones web funcionales y experiencias digitales cuidadas desde el codigo hasta el detalle visual.",
+        "Desarrollador full stack orientado a construir software completo: aplicaciones web, sistemas, experiencias desktop e integraciones con IA, cuidando arquitectura, producto y detalle visual.",
       projects: "Ver proyectos",
-      contact: "Contactarme",
+      contact: "Escríbeme",
       cv: "Descargar CV",
       typingPrefix: "Desarrollando ",
       typing: [
-        "interfaces modernas",
+        "productos full stack",
         "aplicaciones web",
-        "experiencias digitales",
-        "software funcional",
+        "software desktop",
+        "soluciones con IA",
       ],
+      socials: "Enlaces profesionales",
+      github: "Abrir GitHub",
+      linkedin: "Abrir LinkedIn",
+      email: "Abrir formulario de contacto",
     },
     en: {
       hello: "Hello, I'm",
       description:
-        "Software Engineering student focused on building clear interfaces, functional web apps and polished digital experiences from code quality to visual detail.",
+        "Full stack developer focused on building complete software: web applications, systems, desktop experiences and AI integrations with care for architecture, product thinking and visual detail.",
       projects: "View projects",
-      contact: "Contact me",
+      contact: "Write me",
       cv: "Download CV",
       typingPrefix: "Building ",
       typing: [
-        "modern interfaces",
+        "full-stack products",
         "web applications",
-        "digital experiences",
-        "functional software",
+        "desktop software",
+        "AI-powered tools",
       ],
+      socials: "Professional links",
+      github: "Open GitHub",
+      linkedin: "Open LinkedIn",
+      email: "Open contact form",
     },
   };
 
@@ -71,6 +79,7 @@ export default function Hero({ language }: HeroProps) {
           <div className="hero-typing" aria-label={text.typingPrefix.trim()}>
             <span className="typing-prefix">{text.typingPrefix}</span>
             <TypeAnimation
+              key={language}
               sequence={[
                 text.typing[0],
                 1800,
@@ -110,16 +119,16 @@ export default function Hero({ language }: HeroProps) {
             </a>
           </div>
 
-          <div className="hero-socials" aria-label="Social links">
-            <a href={githubHref} target="_blank" rel="noreferrer" aria-label="GitHub">
+          <div className="hero-socials" aria-label={text.socials}>
+            <a href={githubHref} target="_blank" rel="noreferrer" aria-label={text.github}>
               <FaGithub />
             </a>
 
-            <a href={linkedinHref} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <a href={linkedinHref} target="_blank" rel="noreferrer" aria-label={text.linkedin}>
               <FaLinkedin />
             </a>
 
-            <button type="button" onClick={openFloatingContact} aria-label="Email">
+            <button type="button" onClick={openFloatingContact} aria-label={text.email}>
               <FaEnvelope />
             </button>
           </div>

@@ -9,22 +9,30 @@ type AboutProps = {
 export default function About({ language }: AboutProps) {
   const content = {
     es: {
-      tag: "SOBRE MI",
-      title: "Aprendo construyendo productos web utiles, ordenados y visualmente cuidados.",
+      tag: "SOBRE MÍ",
+      title: "Construyo software útil, claro y bien diseñado.",
       text:
-        "Soy Eduardo Chacaliaza, estudiante de Ingenieria de Software en la UPC. Trabajo en proyectos web donde puedo unir estructura, criterio visual y buenas practicas para convertir ideas en interfaces funcionales, mantenibles y faciles de usar.",
+        "Soy Eduardo Chacaliaza, estudiante de Ingeniería de Software. Me interesa crear aplicaciones web, sistemas y herramientas que conecten diseño, lógica de negocio y tecnología para resolver necesidades reales.",
       support:
-        "Me interesa crecer como desarrollador frontend y full stack, aportando con codigo claro, curiosidad tecnica y atencion al detalle.",
-      caption: "Software Engineering · UPC · Web Development",
+        "Trabajo con frontend, backend, bases de datos e integración de servicios, buscando que cada proyecto sea funcional, mantenible y visualmente cuidado.",
+      caption: "SOFTWARE ENGINEERING · FULL STACK DEVELOPMENT · PRODUCT THINKING",
+      gallery: "Galería sobre Eduardo",
+      altMain: "Eduardo Chacaliaza",
+      altCampus: "Campus UPC",
+      altPortrait: "Retrato de Eduardo Chacaliaza",
     },
     en: {
       tag: "ABOUT ME",
-      title: "I learn by building useful, organized and visually polished web products.",
+      title: "I build useful, clear and well-designed software.",
       text:
-        "I'm Eduardo Chacaliaza, a Software Engineering student at UPC. I build web projects that combine structure, visual judgement and development best practices to turn ideas into functional, maintainable and easy-to-use interfaces.",
+        "I'm Eduardo Chacaliaza, a Software Engineering student. I'm interested in creating web applications, systems and tools that connect design, business logic and technology to solve real needs.",
       support:
-        "My goal is to grow as a frontend and full-stack developer by contributing clean code, technical curiosity and attention to detail.",
-      caption: "Software Engineering · UPC · Web Development",
+        "I work with frontend, backend, databases and service integration, aiming for every project to be functional, maintainable and visually polished.",
+      caption: "SOFTWARE ENGINEERING · FULL STACK DEVELOPMENT · PRODUCT THINKING",
+      gallery: "Eduardo gallery",
+      altMain: "Eduardo Chacaliaza",
+      altCampus: "UPC campus",
+      altPortrait: "Portrait of Eduardo Chacaliaza",
     },
   };
 
@@ -32,18 +40,18 @@ export default function About({ language }: AboutProps) {
 
   const photos = [
     {
-      src: "/images/profile/eduardo.jpg",
-      alt: "Eduardo Chacaliaza",
+      src: "/images/profile/upc.png",
+      alt: text.altCampus,
       className: "photo-one",
     },
     {
-      src: "/images/profile/universidad.jpg",
-      alt: "UPC campus",
+      src: "/images/profile/laptop.png",
+      alt: text.altPortrait,
       className: "photo-two",
     },
     {
       src: "/images/profile/eduardo.jpg",
-      alt: "Retrato de Eduardo Chacaliaza",
+      alt: text.altMain,
       className: "photo-three",
     },
   ];
@@ -60,7 +68,7 @@ export default function About({ language }: AboutProps) {
           <span>{text.caption}</span>
         </div>
 
-        <div className="photo-stack" aria-label="About image gallery">
+        <div className="photo-stack" aria-label={text.gallery}>
           {photos.map((photo, index) => (
             <figure
               className={`printed-photo ${photo.className}`}

@@ -37,7 +37,7 @@ export default function Home() {
         <Projects language={language} />
         <Contact language={language} />
         <Footer language={language} />
-        <FloatingContact />
+        <FloatingContact language={language} />
       </main>
     </>
   );

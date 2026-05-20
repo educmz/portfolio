@@ -7,6 +7,7 @@ import {
   FaCode,
   FaExternalLinkAlt,
   FaGithub,
+  FaImage,
   FaLinkedin,
   FaTimes,
 } from "react-icons/fa";
@@ -22,6 +23,17 @@ type Certificate = {
   image: string;
 };
 
+type Project = {
+  number: string;
+  title: string;
+  stack: string[];
+  visibleStack: string[];
+  preview: string[];
+  image: string;
+  deployUrl: string;
+  githubUrl: string;
+};
+
 export default function Projects({ language }: ProjectsProps) {
   const [activeTab, setActiveTab] = useState<"projects" | "certificates">(
     "projects",
@@ -34,123 +46,125 @@ export default function Projects({ language }: ProjectsProps) {
 
   const content = {
     es: {
-      tag: "PORTAFOLIO",
-      title: "Proyectos y certificados",
-      description:
-        "Una seleccion de trabajos, practicas y certificaciones que muestran mi avance como desarrollador.",
+      tag: "PORTFOLIO",
+      projectsTitle: "Proyectos",
+      projectsDescription:
+        "Una seleccion de proyectos con enfoque en producto, arquitectura clara y experiencias listas para crecer.",
+      certificatesTitle: "Certificados",
+      certificatesDescription:
+        "Credenciales y formacion tecnica que respaldan mi aprendizaje en desarrollo, datos, metodologia e IA.",
       projects: "Proyectos",
       certificates: "Certificados",
-      start: "Start",
-      github: "Explorar repositorios",
+      viewProject: "Ver proyecto",
+      inProgress: "En desarrollo",
+      imageReady: "Preview del proyecto",
+      github: "Ver GitHub",
       linkedin: "Consultar credenciales",
       credential: "Credencial",
       issuedBy: "Emitido por",
       close: "Cerrar certificado",
-      imagePlaceholder: "Vista previa",
+      imagePlaceholder: "Preview preparado",
+      projectTabs: "Cambiar vista del portfolio",
+      openCertificate: "Abrir certificado",
     },
     en: {
       tag: "PORTFOLIO",
-      title: "Projects and certificates",
-      description:
-        "A curated selection of work, practice and credentials that reflects my growth as a developer.",
+      projectsTitle: "Projects",
+      projectsDescription:
+        "A selection of projects focused on product thinking, clear architecture and experiences ready to grow.",
+      certificatesTitle: "Certificates",
+      certificatesDescription:
+        "Credentials and technical training that support my growth in development, data, methodology and AI.",
       projects: "Projects",
       certificates: "Certificates",
-      start: "Start",
-      github: "Explore repositories",
+      viewProject: "View project",
+      inProgress: "In progress",
+      imageReady: "Project preview",
+      github: "View GitHub",
       linkedin: "Review credentials",
       credential: "Credential",
       issuedBy: "Issued by",
       close: "Close certificate",
-      imagePlaceholder: "Preview",
+      imagePlaceholder: "Preview ready",
+      projectTabs: "Switch portfolio view",
+      openCertificate: "Open certificate",
     },
   };
 
   const text = content[language];
+  const activeTitle =
+    activeTab === "projects" ? text.projectsTitle : text.certificatesTitle;
+  const activeDescription =
+    activeTab === "projects"
+      ? text.projectsDescription
+      : text.certificatesDescription;
 
-  const projects = [
+  const projects: Project[] = [
     {
       number: "01",
-      type: "WEB APP",
       title: "AquaRuta",
-      description:
-        language === "es"
-          ? "Aplicacion para visualizar rutas y apoyar decisiones con una interfaz clara y responsive."
-          : "Application for visualizing routes and supporting decisions through a clear, responsive interface.",
-      tags: ["React", "Maps", "UX"],
-      link: "#",
-      preview: ["Route planner", "Map layers", "Responsive UI"],
-      previewImage: "",
+      stack: ["Next.js", "TypeScript", "Python", "FastAPI", "Leaflet", "MongoDB"],
+      visibleStack: ["Next.js", "Python", "MongoDB"],
+      preview: ["Maps", "Routes", "API"],
+      image: "",
+      deployUrl: "",
+      githubUrl: "",
     },
     {
       number: "02",
-      type: "FULL STACK",
-      title: "Nexo",
-      description:
-        language === "es"
-          ? "Proyecto web modular con enfoque en gestion, componentes reutilizables y experiencia de usuario."
-          : "Modular web project focused on management flows, reusable components and user experience.",
-      tags: ["Next.js", "Node.js", "API"],
-      link: "#",
-      preview: ["Dashboard", "Modules", "Reusable components"],
-      previewImage: "",
+      title: "LexStudio",
+      stack: ["Astro", "Tailwind", "Framer Motion", "SEO"],
+      visibleStack: ["Astro", "Tailwind", "SEO"],
+      preview: ["Content", "Motion", "SEO"],
+      image: "",
+      deployUrl: "",
+      githubUrl: "",
     },
     {
       number: "03",
-      type: "ALGORITHMS",
-      title: "OptiRuta",
-      description:
-        language === "es"
-          ? "Proyecto academico orientado a rutas, optimizacion y visualizacion de resultados."
-          : "Academic project focused on routes, optimization and result visualization.",
-      tags: ["Algorithms", "React", "Data"],
-      link: "#",
-      preview: ["Optimization", "Routes", "Results"],
-      previewImage: "",
+      title: "NovaPOS",
+      stack: ["Angular", "NestJS", "PostgreSQL", "Prisma"],
+      visibleStack: ["Angular", "NestJS", "PostgreSQL"],
+      preview: ["Sales", "Inventory", "Ops"],
+      image: "",
+      deployUrl: "",
+      githubUrl: "",
     },
     {
       number: "04",
-      type: "LANDING",
-      title: "Portfolio UI",
-      description:
-        language === "es"
-          ? "Interfaz personal optimizada para presentar proyectos, habilidades y datos de contacto."
-          : "Personal interface optimized to present projects, skills and contact information.",
-      tags: ["Next.js", "CSS", "SEO"],
-      link: "#",
-      preview: ["Personal brand", "Sections", "Performance"],
-      previewImage: "",
+      title: "AetherAI",
+      stack: ["Next.js", "TypeScript", "OpenAI API", "Supabase", "pgvector"],
+      visibleStack: ["Next.js", "OpenAI API", "Supabase", "pgvector"],
+      preview: ["AI", "Vectors", "Knowledge"],
+      image: "",
+      deployUrl: "",
+      githubUrl: "",
     },
     {
       number: "05",
-      type: "SOFTWARE",
-      title: "Sistema Academico",
-      description:
-        language === "es"
-          ? "Practica de modelado, logica de negocio y organizacion de codigo para flujos academicos."
-          : "Practice in modeling, business logic and code organization for academic workflows.",
-      tags: ["TypeScript", "Logic", "UI"],
-      link: "#",
-      preview: ["Academic flows", "Modeling", "Validation"],
-      previewImage: "",
+      title: "Nexo",
+      stack: ["Electron", "React", "TypeScript", "SQLite", "Tailwind"],
+      visibleStack: ["Electron", "React", "SQLite"],
+      preview: ["Desktop", "Local DB", "Modules"],
+      image: "",
+      deployUrl: "",
+      githubUrl: "",
     },
     {
       number: "06",
-      type: "DATABASE",
-      title: "Data Manager",
-      description:
-        language === "es"
-          ? "Ejercicio de integracion de datos con consultas, estructura relacional y vistas de control."
-          : "Data integration exercise with queries, relational structure and control views.",
-      tags: ["MySQL", "Node.js", "CRUD"],
-      link: "#",
-      preview: ["Relational data", "Queries", "Control views"],
-      previewImage: "",
+      title: "Urbana",
+      stack: ["Next.js", "TypeScript", "Stripe", "PostgreSQL", "Prisma"],
+      visibleStack: ["Next.js", "Stripe", "PostgreSQL"],
+      preview: ["Payments", "Catalog", "Data"],
+      image: "",
+      deployUrl: "",
+      githubUrl: "",
     },
   ];
 
   const certificates: Certificate[] = [
     {
-      name: "HTML: Creación de páginas web",
+      name: "HTML: Creacion de paginas web",
       issuer: "Netzun",
       year: "2025",
       image: "/certificates/html-netzun.jpg",
@@ -192,11 +206,11 @@ export default function Projects({ language }: ProjectsProps) {
       <div className="projects-container">
         <div className="projects-header">
           <p className="section-tag">{text.tag}</p>
-          <h2 id="projects-title">{text.title}</h2>
-          <p>{text.description}</p>
+          <h2 id="projects-title">{activeTitle}</h2>
+          <p>{activeDescription}</p>
         </div>
 
-        <div className="projects-tabs" role="tablist" aria-label={text.title}>
+        <div className="projects-tabs" role="tablist" aria-label={text.projectTabs}>
           <button
             className={activeTab === "projects" ? "active" : ""}
             onClick={() => setActiveTab("projects")}
@@ -222,105 +236,116 @@ export default function Projects({ language }: ProjectsProps) {
 
         <div className="portfolio-panel">
           {activeTab === "projects" ? (
-          <>
-            <div className="projects-showcase">
-              {projects.map((project) => (
-                <article className="project-showcase-card" key={project.number}>
-                  <div className="project-preview" aria-hidden="true">
-                    {project.previewImage ? (
-                      <Image
-                        src={project.previewImage}
-                        alt=""
-                        fill
-                        sizes="(max-width: 1120px) 50vw, 33vw"
-                      />
-                    ) : (
-                      <>
-                        <span className="preview-number">{project.number}</span>
-                        <div>
-                          {project.preview.map((item) => (
-                            <span key={item}>{item}</span>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
+            <>
+              <div className="projects-showcase">
+                {projects.map((project) => {
+                  const projectHref = project.deployUrl || project.githubUrl;
 
-                  <div className="project-meta">
-                    <span>{project.number}</span>
-                    <span>{project.type}</span>
-                  </div>
+                  return (
+                    <article className="project-showcase-card" key={project.number}>
+                      <div className="project-preview" aria-hidden="true">
+                        {project.image ? (
+                          <Image
+                            src={project.image}
+                            alt=""
+                            fill
+                            sizes="(max-width: 1120px) 50vw, 33vw"
+                          />
+                        ) : (
+                          <div className="project-preview-placeholder">
+                            <span className="preview-number">{project.number}</span>
+                            <span className="preview-icon">
+                              <FaImage />
+                            </span>
+                            <strong>{text.imageReady}</strong>
+                            <span>{project.preview.join(" - ")}</span>
+                          </div>
+                        )}
+                      </div>
 
-                  <div className="project-title-row">
-                    <h3>{project.title}</h3>
-                    <a href={project.link} className="start-link" aria-label={`${text.start} ${project.title}`}>
-                      {text.start}
-                      <FaExternalLinkAlt />
-                    </a>
-                  </div>
+                      <div className="project-title-row">
+                        <h3>{project.title}</h3>
+                        {projectHref ? (
+                          <a
+                            href={projectHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="project-link"
+                            aria-label={`${text.viewProject}: ${project.title}`}
+                          >
+                            {text.viewProject}
+                            <FaExternalLinkAlt />
+                          </a>
+                        ) : (
+                          <span className="project-link is-disabled">
+                            {text.inProgress}
+                            <FaExternalLinkAlt />
+                          </span>
+                        )}
+                      </div>
 
-                  <p>{project.description}</p>
+                      <div className="project-tags" aria-label={project.stack.join(", ")}>
+                        {project.visibleStack.map((tag) => (
+                          <span key={tag}>{tag}</span>
+                        ))}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
 
-                  <div className="project-tags">
-                    {project.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="section-cta">
-              <a href={githubHref} target="_blank" rel="noreferrer" className="btn btn-outline">
-                <FaGithub />
-                {text.github}
-              </a>
-            </div>
-          </>
+              <div className="section-cta">
+                <a href={githubHref} target="_blank" rel="noreferrer" className="btn btn-outline">
+                  <FaGithub />
+                  {text.github}
+                </a>
+              </div>
+            </>
           ) : (
-          <>
-            <div className="certificates-grid">
-              {certificates.map((certificate) => (
-                <button
-                  className="certificate-card"
-                  key={certificate.name}
-                  type="button"
-                  onClick={() => setSelectedCertificate(certificate)}
-                >
-                  <span className="certificate-preview" aria-hidden="true">
-                    {certificate.image ? (
-                      <Image
-                        src={certificate.image}
-                        alt=""
-                        fill
-                        sizes="(max-width: 1120px) 50vw, 33vw"
-                      />
-                    ) : (
-                      <>
-                        <span className="certificate-ribbon" />
-                        <FaCertificate />
-                        <span className="certificate-preview-label">
-                          {text.imagePlaceholder}
-                        </span>
-                      </>
-                    )}
-                  </span>
-                  <span className="certificate-copy">
-                    <span className="certificate-name">{certificate.name}</span>
-                    <span>{certificate.issuer}</span>
-                    <span>{certificate.year}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
+            <>
+              <div className="certificates-grid">
+                {certificates.map((certificate) => (
+                  <button
+                    className="certificate-card"
+                    key={certificate.name}
+                    type="button"
+                    aria-label={`${text.openCertificate}: ${certificate.name}`}
+                    onClick={() => setSelectedCertificate(certificate)}
+                  >
+                    <span className="certificate-preview" aria-hidden="true">
+                      {certificate.image ? (
+                        <Image
+                          src={certificate.image}
+                          alt=""
+                          fill
+                          sizes="(max-width: 1120px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <>
+                          <span className="certificate-ribbon" />
+                          <FaCertificate />
+                          <span className="certificate-preview-label">
+                            {text.imagePlaceholder}
+                          </span>
+                        </>
+                      )}
+                    </span>
+                    <span className="certificate-copy">
+                      <span className="certificate-name">{certificate.name}</span>
+                      <span>{certificate.issuer}</span>
+                      <span>{certificate.year}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
 
-            <div className="section-cta">
-              <a href={linkedinHref} target="_blank" rel="noreferrer" className="btn btn-outline">
-                <FaLinkedin />
-                {text.linkedin}
-              </a>
-            </div>
-          </>
+              <div className="section-cta">
+                <a href={linkedinHref} target="_blank" rel="noreferrer" className="btn btn-outline">
+                  <FaLinkedin />
+                  {text.linkedin}
+                </a>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -349,7 +374,7 @@ export default function Projects({ language }: ProjectsProps) {
                   src={selectedCertificate.image}
                   alt={`${selectedCertificate.name} ${text.credential}`}
                   fill
-                  sizes="min(100vw, 720px)"
+                  sizes="min(100vw, 1040px)"
                 />
               ) : (
                 <>
