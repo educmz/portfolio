@@ -6,7 +6,7 @@ This project presents my selected projects, certifications, technical skills and
 
 ## Live Site
 
-[View portfolio](TU_LINK_DE_VERCEL)
+[View portfolio](https://portfolio-ruby-three-yxlc988kbc.vercel.app/)
 
 ## Tech Stack
 
