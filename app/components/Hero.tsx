@@ -113,7 +113,11 @@ export default function Hero({ language }: HeroProps) {
               {text.contact}
             </button>
 
-            <a href="/cv.pdf" className="btn btn-outline" download>
+            <a
+              href="/cv/CURRICULUM_VITAE_EDUARDO_CHACALIAZA_MINAYA.pdf"
+              className="btn btn-outline"
+              download
+            >
               <FaDownload />
               {text.cv}
             </a>

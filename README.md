@@ -1,49 +1,32 @@
 # Eduardo Chacaliaza — Developer Portfolio
 
-Personal developer portfolio built with Next.js, TypeScript, and Tailwind CSS.
+Personal portfolio built with Next.js, React and TypeScript.
 
-This repository contains the source code for my portfolio website, where I present selected projects, skills, and ways to get in touch.
+This project presents my selected projects, certifications, technical skills and contact options through a modern, responsive and bilingual portfolio experience.
 
-## Live site
+## Live Site
 
-Live site URL will be added after deployment.
+[View portfolio](TU_LINK_DE_VERCEL)
 
-## Main features
-- Project showcase with links to live demos and source code
-- About and contact sections
-- Responsive layout focused on readability
+## Tech Stack
 
-## Tech stack
 - Next.js
+- React
 - TypeScript
-- Tailwind CSS
+- CSS / Global CSS
+- React Icons
+- Formspree
 
-For a more detailed technical description and full local development instructions, see `app/README.md`.
+## Features
 
-## Local development (quick start)
+- Responsive portfolio interface
+- Projects and certifications showcase
+- Dark/light theme
+- Spanish/English language switch
+- Floating contact form
+- WhatsApp and email contact integration
+- Smooth scrolling and modern UI interactions
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/educmz/portfolio.git
-   ```
-2. Navigate to the application directory:
-   ```bash
-   cd portfolio/app
-   ```
-3. Install dependencies and start the development server:
-   ```bash
-   npm install
-   npm run dev
-   ```
+## Deployment
 
-## Repository structure
-
-- `/` – General documentation, license, and project metadata
-- `/app` – Next.js application source code
-- `/app/app` – Routes, layouts, and pages (Next.js App Router)
-- `/app/public` – Static assets (icons, images, etc.)
-
-## Author
-
-Eduardo Fabian Chacaliaza Minaya  
-GitHub: https://github.com/educmz
+Deployed with Vercel.

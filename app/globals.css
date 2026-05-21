@@ -210,6 +210,12 @@ p {
   color: var(--accent);
 }
 
+.btn.is-disabled {
+  cursor: default;
+  opacity: 0.68;
+  pointer-events: none;
+}
+
 /* Header */
 
 .header {

@@ -167,37 +167,37 @@ export default function Projects({ language }: ProjectsProps) {
       name: "HTML: Creacion de paginas web",
       issuer: "Netzun",
       year: "2025",
-      image: "/certificates/html-netzun.jpg",
+      image: "/images/certificates/html-netzun.jpg",
     },
     {
       name: "Introduction to MongoDB",
       issuer: "MongoDB University",
       year: "2025",
-      image: "/certificates/mongodb.jpg",
+      image: "/images/certificates/mongodb.jpg",
     },
     {
       name: "Scrum Fundamentals",
       issuer: "SCRUMstudy",
       year: "2025",
-      image: "/certificates/scrum-fundamentals.jpg",
+      image: "/images/certificates/scrum-fundamentals.jpg",
     },
     {
       name: "Generative AI: Prompt Engineering Basics",
       issuer: "IBM / Coursera",
       year: "2025",
-      image: "/certificates/ibm-prompt-engineering.jpg",
+      image: "/images/certificates/ibm-prompt-engineering.jpg",
     },
     {
       name: "Generative AI: Introduction and Applications",
       issuer: "IBM / Coursera",
       year: "2025",
-      image: "/certificates/ibm-generative-ai-intro.jpg",
+      image: "/images/certificates/ibm-generative-ai-intro.jpg",
     },
     {
       name: "Generative AI: Foundation Models and Platforms",
       issuer: "IBM / Coursera",
       year: "2025",
-      image: "/certificates/ibm-foundation-models.jpg",
+      image: "/images/certificates/ibm-foundation-models.jpg",
     },
   ];
 
